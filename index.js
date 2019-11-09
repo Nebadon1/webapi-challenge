@@ -12,3 +12,19 @@ I need this code, just don't know where, perhaps should make some middleware, do
 
 Go code!
 */
+
+const server = require("./server");
+
+const port = 4001;
+
+server.listen(port, () => console.log(`\n*** Server Running on port ${port}***\n`));
+
+
+
+/// In case of deployment to Heroku use this code... 
+
+// const ports = process.env.PORT
+
+// server.listen(ports, () => {
+// console.log(`\n*** Server Running on port ${ports}***\n`);
+// });
