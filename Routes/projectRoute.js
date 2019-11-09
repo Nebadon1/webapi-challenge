@@ -12,3 +12,18 @@ router.get("/", (req, res) => {
       });
   });
   
+
+router.get("/:id", validateProjectId, (req, res) => {
+    Project.get(req.params.id).then(project =>
+      res
+        .status(200)
+        .json(project)
+        .catch(() =>
+          res
+            .status(500)
+            .json({ errorMessage: "Couldnt sent the specific project" })
+        )
+    );
+  });
+  
+  

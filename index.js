@@ -15,6 +15,16 @@ Go code!
 
 const server = require("./server");
 
-const port = 4000;
+const port = 4001;
 
-server.listen(port, () => console.log(`\n Server running on port ${port}\n`));
+server.listen(port, () => console.log(`\n*** Server Running on port ${port}***\n`));
+
+
+
+/// In case of deployment to Heroku use this code... 
+
+// const ports = process.env.PORT
+
+// server.listen(ports, () => {
+// console.log(`\n*** Server Running on port ${ports}***\n`);
+// });
