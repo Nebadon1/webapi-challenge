@@ -27,3 +27,12 @@ router.get("/:id", validateProjectId, (req, res) => {
   });
   
   
+router.get("/:id/actions", validateProjectId, (req, res) => {
+    Project.getProjectActions(req.params.id)
+      .then(actions => res.status(200).json(actions))
+      .catch(() =>
+        res
+          .status(500)
+          .json({ errorMessage: "Error with getting all actions for a project" })
+      );
+  });
