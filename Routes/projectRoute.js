@@ -36,3 +36,69 @@ router.get("/:id/actions", validateProjectId, (req, res) => {
           .json({ errorMessage: "Error with getting all actions for a project" })
       );
   });
+
+  
+router.post("/", validateProjectResource, (req, res) => {
+    Project.insert(req.body)
+      .then(add => res.status(201).json({ Created: add }))
+      .catch(() =>
+        res
+          .status(500)
+          .json({ errorMessage: "Error with adding new project to database" })
+      );
+  });
+  
+  
+  router.delete("/:id", validateProjectId, (req, res) => {
+    Project.remove(req.params.id)
+      .then(deleted => res.status(200).json({ recordsDeleted: deleted }))
+      .catch(() =>
+        res
+          .status(500)
+          .json({ errorMessage: "Error in removing specific project" })
+      );
+  });
+  
+  
+  router.put("/:id", [validateProjectId, validateProjectResource], (req, res) => {
+    Project.update(req.params.id, req.body)
+      .then(update => res.status(202).json({ projectUpdated: update }))
+      .catch(() =>
+        res
+          .status(500)
+          .json({ errorMessage: "Error updating the specific Project" })
+      );
+  });
+  
+  
+  router.use("/:id/actions", validateProjectId, actionRouter);
+  
+  
+  function validateProjectResource(req, res, next) {
+    if (req.body.name === undefined) {
+      res.status(400).json({
+        errorMessage: "Make sure your project has name field"
+      });
+    } else if (req.body.description === undefined) {
+      res.status(400).json({
+        errorMessage: "Make sure your project has description field"
+      });
+    } else {
+      next();
+    }
+  }
+  function validateProjectId(req, res, next) {
+    Project.get(req.params.id)
+      .then(project => {
+        if (project) {
+          next();
+        } else {
+          res.status(400).json({ errorMessage: "Invalid Project ID" });
+        }
+      })
+      .catch(() =>
+        res.status(500).json({ errorMessage: "Error with accessing Projects" })
+      );
+  }
+  module.exports = router;
+  
